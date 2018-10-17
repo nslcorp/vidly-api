@@ -30,3 +30,4 @@ node_modules/
 # next.js build output
 .next
 
+/config/custom-environment-variables.json
