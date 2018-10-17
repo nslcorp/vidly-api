@@ -6,10 +6,17 @@ class GenreController extends BaseController {
     super();
 
     this.getAll = [this._getAll, this.sendResponse];
-    this.getById = [this._getById, this.sendResponse];
-    this.create = [this._create, this.sendResponse];
-    this.update = [this._update, this.sendResponse];
-    this.delete = [this._delete, this.sendResponse];
+    this.getById = [this.validateParamsId, this._getById, this.sendResponse];
+    this.create = [this._validateBody, this._create, this.sendResponse];
+    this.update = [this.validateParamsId, this._validateBody, this._update, this.sendResponse];
+    this.delete = [this.validateParamsId, this._delete, this.sendResponse];
+  }
+
+  _validateBody(req, res, next) {
+    const { error } = validate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    next();
   }
 
   async _getAll(req, res, next) {
@@ -22,7 +29,6 @@ class GenreController extends BaseController {
   }
 
   async _getById(req, res, next) {
-    //TODO: validate req.params.id
     const genre = await Genre.findById(req.params.id);
 
     if (!genre) return res.status(404).send('The genre with the given ID was not found.');
@@ -32,9 +38,6 @@ class GenreController extends BaseController {
   }
 
   async _create(req, res, next) {
-    const { error } = validate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
     const genre = await Genre({
       name: req.body.name
     });
@@ -44,11 +47,6 @@ class GenreController extends BaseController {
   }
 
   async _update(req, res, next) {
-    //TODO: validate req.params.id
-
-    const { error } = validate(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
     const genre = await Genre.findByIdAndUpdate(
       req.params.id,
       { name: req.body.name },
@@ -62,7 +60,6 @@ class GenreController extends BaseController {
   }
 
   async _delete(req, res, next) {
-    //TODO: validate req.params.id
     const genre = await Genre.findOneAndDelete({ _id: req.params.id });
 
     if (!genre) return res.status(404).send('The genre with the given ID was not found.');

@@ -1,7 +1,7 @@
 const GenreController = require('./GenreController');
+const CustomerController = require('./CustomerController');
+const MovieController = require('./MovieController');
 
-const genreController = new GenreController();
-
-module.exports = {
-  genreController
-};
+module.exports.genreController = new GenreController();
+module.exports.customerController = new CustomerController();
+module.exports.movieController = new MovieController();

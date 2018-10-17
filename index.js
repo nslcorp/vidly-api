@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
+const Joi = require('joi');
+
 
 const routes = require('./routes');
 
 const app = express();
+Joi.objectId = require('joi-objectid')(Joi);
 
 mongoose
   .connect(
