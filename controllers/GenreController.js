@@ -9,7 +9,7 @@ class GenreController extends BaseController {
     this.getById = [this.validateParamsId, this._getById, this.sendResponse];
     this.create = [this.auth, this._validateBody, this._create, this.sendResponse];
     this.update = [this.validateParamsId, this._validateBody, this._update, this.sendResponse];
-    this.delete = [this.validateParamsId, this._delete, this.sendResponse];
+    this.delete = [this.auth, this.admin, this.validateParamsId, this._delete, this.sendResponse];
   }
 
   _validateBody(req, res, next) {

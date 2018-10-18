@@ -32,6 +32,8 @@ class UserController extends BaseController {
       this.sendResponse
     ];
   }
+  //admin
+  // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YmM4MzlkZGQwZDdiZjMyZTA4OGY0MTIiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE1Mzk4NDg3MjZ9.NEHUCRNthk495W3I9CCzVqfJzDejCzCc4WovVX0oOP8
 
   //x-auth-token
   //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YmM3NDkxMjBhODE2MjJhYzA1NDYyZDIiLCJpYXQiOjE1Mzk3ODcwMjZ9.7tCBRZKiNPo574LLFO9iWH_Q_XxnyfiJEDtv92rPVMM
