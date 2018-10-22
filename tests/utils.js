@@ -1,12 +1,11 @@
-const UserController = require('../controllers/UserController');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
-const userController = new UserController();
-const req = { user: { _id: mongoose.Types.ObjectId().toHexString(), isAdmin: true } };
-const res = {};
-const next = jest.fn();
-userController._generateAuthToken(req, res, next);
+const objectId = mongoose.Types.ObjectId();
 
-console.log(req);
+module.exports.getToken = (_id = objectId.toHexString(), isAdmin = false) => {
+  return jwt.sign({ _id, isAdmin }, config.get('jwtPrivateKey'));
+};
 
-module.exports.token = req.token;
+module.exports.objectId = () => objectId;

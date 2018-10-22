@@ -2,7 +2,7 @@ const request = require('supertest');
 const mongoose = require('mongoose');
 
 const { Genre } = require('../../models/genre');
-const { token } = require('../utils');
+const { getToken } = require('../utils');
 
 let server;
 
@@ -10,7 +10,7 @@ describe('/api/genres', () => {
   beforeEach(() => (server = require('../../index')));
   afterEach(async () => {
     await Genre.remove({});
-    server.close();
+    await server.close();
   });
 
   describe('GET /', () => {
@@ -53,23 +53,48 @@ describe('/api/genres', () => {
   });
 
   describe('POST /', () => {
-    it('should shold return 401 if client is not auth', async () => {
-      const res = await request(server)
+    let token = null;
+    let name = null;
+
+    beforeEach(() => {
+      token = getToken();
+      name = 'genre1';
+    });
+
+    const api = async () =>
+      await request(server)
         .post('/api/genres/')
-        .send({ name: 'genre1' });
+        .set('x-auth-token', token)
+        .send({ name });
+
+    it('should should return 401 if client is not auth', async () => {
+      token = '';
+      const res = await api();
 
       expect(res.status).toBe(401);
     });
-  });
 
-  describe('POST /', () => {
     it('should should return 400 if name is less than 5 chars', async () => {
-      const res = await request(server)
-        .post('/api/genres/')
-        .send('x-auth-token', token)
-        .send({ name: 'aa' });
+      name = 'ab';
+      const res = await api();
 
-      expect(res.status).toBe(401);
+      expect(res.status).toBe(400);
+    });
+
+    it('should should save Genre if valid', async () => {
+      await api();
+      const genre = await Genre.find({ name: 'genre1' });
+
+      expect(genre).not.toBeNull();
+    });
+
+    it('should should returned Genre after save', async () => {
+      const res = await api();
+
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveProperty('name', 'genre1');
+      expect(res.body).toHaveProperty('_id');
+      expect(res.body).toHaveProperty('name', 'genre1');
     });
   });
 });

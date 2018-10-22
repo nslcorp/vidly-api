@@ -24,7 +24,6 @@ class BaseController {
 
     try {
       const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
-      console.log(decoded);
       req.user = decoded;
 
       next();
@@ -34,7 +33,6 @@ class BaseController {
   }
 
   admin(req, res, next) {
-    console.log(req.user);
     // 401 Unauthorized
     // 403 Forbidden
     if (!req.user.isAdmin) return res.status(403).send('Access denied.');
