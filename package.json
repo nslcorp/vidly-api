@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "test": "jest --watchAll --verbose",
+    "test": "jest --watchAll --verbose --detectOpenHandles",
+    "test:detect": "jest --verbose --detectOpenHandles",
     "test:coverage": "jest --verbose --coverage"
   },
   "keywords": [],
@@ -28,6 +29,7 @@
     "winston-mongodb": "^3.0.2"
   },
   "devDependencies": {
-    "jest": "^23.6.0"
+    "jest": "^23.6.0",
+    "moment": "^2.22.2"
   }
 }
